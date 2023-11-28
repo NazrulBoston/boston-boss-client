@@ -35,30 +35,21 @@ const Menu = () => {
             <MenuCategory
                 items={offered}
             ></MenuCategory>
-            <div className='text-center mb-8'>
-                <button className="btn btn-outline border-0 border-b-2 mt-6">Order Now</button>
-
-            </div>
+           
             {/* desserts menu item */}
             <MenuCategory
                 items={desserts}
                 title="desserts"
                 img={dessertImg}
             ></MenuCategory>
-            <div className='text-center mb-8'>
-                <button className="btn btn-outline border-0 border-b-2 mt-6">Order Now</button>
-
-            </div>
+            
             {/* pizza menu item */}
             <MenuCategory
                 items={pizza}
                 title="pizza"
                 img={pizzaImg}
             ></MenuCategory>
-            <div className='text-center mb-8'>
-                <button className="btn btn-outline border-0 border-b-2 mt-6">Order Now</button>
-
-            </div>
+          
 
             {/* salad menu item */}
 
@@ -67,10 +58,7 @@ const Menu = () => {
                 title="salad"
                 img={saladImg}
             ></MenuCategory>
-            <div className='text-center mb-8'>
-                <button className="btn btn-outline border-0 border-b-2 mt-6">Order Now</button>
-
-            </div>
+           
 
             {/* soup menu item */}
 
@@ -80,10 +68,7 @@ const Menu = () => {
                 img={soupsImg}
 
             ></MenuCategory>
-            <div className='text-center mb-8'>
-                <button className="btn btn-outline border-0 border-b-2 mt-6">Order Now</button>
-
-            </div>
+           
 
 
 
