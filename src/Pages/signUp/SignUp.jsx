@@ -4,33 +4,47 @@ import { useForm } from 'react-hook-form';
 import { AuthContext } from '../../providers/AuthProvider';
 import { Link, useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2'
+import useAxiosPublic from '../../Hooks/useAxiosPublic';
+import img from '../../assets/others/authentication1.png';
+import SocialLogin from '../../components/SocialLogin/SocialLogin';
 
 const SignUp = () => {
-
+    const axiosPublic = useAxiosPublic()
     const { register, handleSubmit, reset, formState: { errors }, } = useForm();
     const { createUser, updateUserProfile } = useContext(AuthContext);
     const navigate = useNavigate();
 
 
     const onSubmit = data => {
-        console.log(data);
+        // console.log(data);
         createUser(data.email, data.password)
             .then(result => {
                 const loggedUser = result.user;
                 console.log(loggedUser);
                 updateUserProfile(data.name, data.photoURL)
                     .then(() => {
-                        console.log("User profile info updated")
-                        reset();
-                        Swal.fire({
-                            position: "top-end",
-                            icon: "success",
-                            title: "User created successfully",
-                            showConfirmButton: false,
-                            timer: 1500
-                        });
-                        
-                           navigate('/');
+                        // create user entry in the database
+                        const userInfo = {
+                            name: data.name,
+                            email: data.email
+                        }
+                        axiosPublic.post('/users', userInfo)
+                            .then(res => {
+                                if (res.data.insertedId) {
+                                    console.log("User added to the database")
+                                    reset();
+                                    Swal.fire({
+                                        position: "top-end",
+                                        icon: "success",
+                                        title: "User created successfully",
+                                        showConfirmButton: false,
+                                        timer: 1500
+                                    });
+
+                                    navigate('/');
+                                }
+                            })
+
                     })
                     .catch(error => console.log(error))
             })
@@ -46,13 +60,12 @@ const SignUp = () => {
             </Helmet>
             <div className="hero min-h-screen bg-base-200">
                 <div className="hero-content flex-col lg:flex-row-reverse">
-                    <div className="text-center lg:text-left">
-                        <h1 className="text-5xl font-bold">Sign Up!</h1>
-                        <p className="py-6">Provident cupiditate voluptatem et in. Quaerat fugiat ut assumenda excepturi exercitationem quasi. In deleniti eaque aut repudiandae et a id nisi.</p>
+                    <div className="text-center md:w-1/2 lg:text-left">
+                        <img src={img} alt="" />
                     </div>
-                    <div className="card shrink-0 w-full max-w-sm shadow-2xl bg-base-100">
+                    <div className="card shrink-0 w-full max-w-sm shadow-2xl bg-base-100 p-8">
                         <form onSubmit={handleSubmit(onSubmit)}>
-
+                            <p className='text-center text-4xl font-bold mb-3'>Sign Up</p>
                             <div className="form-control">
                                 <label className="label">
                                     <span className="label-text">Name</span>
@@ -112,6 +125,10 @@ const SignUp = () => {
                                 <input className="btn btn-primary" type="submit" value="Sign Up" />
 
                             </div>
+                            
+                            <div className="divider">OR</div>
+                            
+                           <SocialLogin></SocialLogin>
                         </form>
                         <p className='text-center mt-4 mb-2'>Have an account? <Link to="/login"><span className='underline font-bold'>Login</span></Link></p>
                     </div>
